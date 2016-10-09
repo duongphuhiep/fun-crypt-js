@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<title>Teencrypt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style type="text/css">
+body {
+	background-color: Gray;
+}
+</style>
+
+<script type="text/javascript">
+/*
+ * A = Cl; B = 3 hoặc ß; C = (; D = ]); E = F_; G = (¬; H = †|; I = ]; K = ]<; L = ]_; M = /v\; N = ]\[; O = º; P = ]º; QU = v\/; R = Pv; S = §; T = †; U = µ; V = v; W = v\/; X = ><; Y = ¥.
+ */
+var trans = {
+		 "M":"/v\\",
+		 "N":"]\\[",
+		 "W":"v\\/",
+		 "A":"Cl",
+		 "D":"])",
+		 "E":"F_",
+		 "G":"(¬",
+		 "H":"†|",
+		 "K":"]<",
+		 "L":"]_",
+		 "P":"]º",
+		 "R":"Pv",
+		 "X":"><",
+		 "B":"ß",
+		 "C":"(",
+		 "I":"]",
+		 "O":"º",
+		 "S":"§",
+		 "T":"†",
+		 "U":"µ",
+		 "V":"v",
+		 "Y":"¥"
+	};
+
+function encode(source)
+{
+	var resu="";
+	for (i=0; i<source.length; i++)
+	{
+	 	letter = source[i].toUpperCase();
+	 	if (letter in trans)
+	 	{
+			resu += trans[letter];
+	 	}
+	 	else
+	 	{
+			resu += letter;
+	 	}
+	}
+	return resu;
+}
+
+function decode(secrete)
+{
+	resu = "";
+	while (secrete.length!=0)
+	{
+		letter = findNextTrans(secrete);
+		
+		delChars = 0;
+		if (letter.length!=0)
+		{
+			resu += letter.toLowerCase();
+			delChars = trans[letter].length;
+		}
+		else
+		{
+			resu += secrete[0];
+			delChars = 1;
+		}
+		
+		secrete = secrete.substr(delChars, secrete.length-delChars);
+	}
+	return resu;
+}
+
+function findNextTrans(s)
+{
+	for (key in trans)
+	{
+		v = trans[key];
+		if (s.length>=v.length && s.substr(0,v.length)==v) //if s.beginsWith(v)
+		{
+			return key;
+		}
+	}
+	return "";
+}
+
+$(document).ready(function(){
+	$("#edtSource").keyup(function(event){
+		src = $(this).val();
+		$("#edtDest").val(encode(src));
+	});
+	$("#edtDest").keyup(function(event){
+		src = $(this).val();
+		$("#edtSource").val(decode(src));
+	});
+});
+
+</script>
+</head>
+<body>
+<h1>Teencrypt</h1>
+<textarea id="edtSource" rows="10" cols="80"></textarea>
+<p>&nbsp;</p>
+<textarea id="edtDest" rows="10" cols="80"></textarea>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Hioacrypt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<style type="text/css">
+body
+{
+background-color: Gray;	
+}
+</style>
+<script type="text/javascript">
+
+	var a_Code = "a".charCodeAt(0); //97
+	var z_Code = "z".charCodeAt(0); //122
+	var A_Code = "A".charCodeAt(0); //65
+	var Z_Code = "Z".charCodeAt(0); //90
+
+	function mirorChar(char, module)
+	{
+		var charCode=char.charCodeAt(0);
+		var baseCode=0;		
+		
+		if (A_Code<=charCode && charCode<=Z_Code)
+		{
+			baseCode = A_Code;
+		}
+		else if (a_Code<=charCode && charCode<=z_Code)
+		{
+			baseCode = a_Code;
+		}
+		else
+		{
+			return char;
+		}
+
+		var charCodeIndex=charCode-baseCode;
+		var beginModuleIndex = Math.floor(charCodeIndex/module) * module;
+		var endModuleIndex = beginModuleIndex + module - 1;
+		if (endModuleIndex>25)
+		{
+			return char;
+		}
+		
+		return String.fromCharCode(endModuleIndex-(charCodeIndex%module) + baseCode);
+	}
+	
+	function crypt(source, module)
+	{
+		var resu="";
+		for (i=0; i<source.length; i++)
+		{
+			resu += mirorChar(source[i],module);
+		}
+		return resu;
+	}
+
+	function computeSourceToDest()
+	{
+		frmMain.edtDest.value = crypt(frmMain.edtSource.value, frmMain.cboKeyAction.selectedIndex + 2);
+	}
+	
+	function computeDestToSource()
+	{
+		frmMain.edtSource.value = crypt(frmMain.edtDest.value, frmMain.cboKeyAction.selectedIndex + 2);
+	}
+
+</script>
+</head>
+
+<body> 
+<h1>Hioacrypt</h1>
+<form name="frmMain">
+	<textarea name="edtSource" rows="10" cols="80" onkeyup="computeSourceToDest()"></textarea>
+	<p/>
+	Action:
+	<select name="cboKeyAction" onchange="computeSourceToDest()" onkeyup="computeSourceToDest()">
+		<option selected="selected">B - Codec</option>
+		<option>C - Codec</option>
+		<option>D - Codec</option>
+		<option>E - Codec</option>
+		<option>F - Codec</option>
+		<option>G - Codec</option>
+		<option>H - Codec</option>
+		<option>I - Codec</option>
+		<option>J - Codec</option>
+		<option>K - Codec</option>
+		<option>L - Codec</option>
+		<option>M - Codec</option>
+		<option>N - Codec</option>
+		<option>O - Codec</option>
+		<option>P - Codec</option>
+		<option>Q - Codec</option>
+		<option>R - Codec</option>
+		<option>S - Codec</option>
+		<option>T - Codec</option>
+		<option>U - Codec</option>
+		<option>V - Codec</option>
+		<option>W - Codec</option>
+		<option>X - Codec</option>
+		<option>Y - Codec</option>
+		<option>Z - Codec</option>
+	</select>
+	<p/>
+	<textarea name="edtDest" rows="10" cols="80" onkeyup="computeDestToSource()"></textarea>
+</form>
+</body>
+</html>
